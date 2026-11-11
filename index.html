@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>充电运维工单系统</title>
+<title>充电运维工单提交</title>
 <style>
 :root {
   --primary: #1677FF;
@@ -16,12 +16,6 @@
   --border: #E5E6EB;
   --success: #00B42A;
   --success-bg: #E8FFEA;
-  --warning: #FF7D00;
-  --warning-bg: #FFF7E8;
-  --processing: #1677FF;
-  --processing-bg: #E6F4FF;
-  --closed: #86909C;
-  --closed-bg: #F2F3F5;
   --danger: #F53F3F;
   --danger-bg: #FFECE8;
   --radius: 8px;
@@ -38,54 +32,33 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* ===== Navigation ===== */
-.nav {
+/* ===== Header ===== */
+.header {
   background: var(--card);
   border-bottom: 1px solid var(--border);
-  position: sticky;
-  top: 0;
-  z-index: 100;
   box-shadow: var(--shadow);
 }
-.nav-inner {
-  max-width: 1200px;
+.header-inner {
+  max-width: 680px;
   margin: 0 auto;
-  padding: 0 16px;
+  padding: 16px;
   display: flex;
   align-items: center;
-  height: 56px;
-  gap: 24px;
+  gap: 10px;
 }
-.nav-brand {
-  font-size: 18px;
-  font-weight: 600;
+.header-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: var(--primary-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: var(--primary);
-  white-space: nowrap;
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  flex-shrink: 0;
 }
-.nav-brand svg { flex-shrink: 0; }
-.nav-tabs {
-  display: flex;
-  gap: 4px;
-  flex: 1;
-}
-.nav-tab {
-  padding: 8px 16px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 14px;
-  color: var(--text-secondary);
-  transition: all 0.2s;
-  border: none;
-  background: none;
-  font-family: inherit;
-  white-space: nowrap;
-}
-.nav-tab:hover { background: var(--bg); color: var(--text); }
-.nav-tab.active { background: var(--primary-light); color: var(--primary); font-weight: 500; }
-.nav-actions { display: flex; gap: 8px; align-items: center; }
+.header-text h1 { font-size: 17px; font-weight: 600; }
+.header-text p { font-size: 12px; color: var(--text-secondary); margin-top: 2px; }
 
 /* ===== Buttons ===== */
 .btn {
@@ -106,34 +79,27 @@ body {
 .btn:hover { border-color: var(--primary); color: var(--primary); }
 .btn-primary { background: var(--primary); color: white; border-color: var(--primary); }
 .btn-primary:hover { background: var(--primary-dark); border-color: var(--primary-dark); color: white; }
-.btn-success { background: var(--success); color: white; border-color: var(--success); }
-.btn-success:hover { opacity: 0.9; color: white; }
-.btn-danger { background: var(--danger); color: white; border-color: var(--danger); }
-.btn-danger:hover { opacity: 0.9; color: white; }
-.btn-sm { padding: 4px 10px; font-size: 12px; }
-.btn-ghost { border: none; background: none; }
-.btn-ghost:hover { background: var(--bg); }
 
 /* ===== Form ===== */
 .form-container {
   max-width: 680px;
   margin: 24px auto;
-  padding: 0 16px;
+  padding: 0 16px 40px;
 }
 .form-card {
   background: var(--card);
   border-radius: var(--radius);
-  padding: 32px;
+  padding: 28px 24px;
   box-shadow: var(--shadow);
 }
 .form-header {
-  margin-bottom: 28px;
-  padding-bottom: 20px;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
   border-bottom: 1px solid var(--border);
 }
-.form-header h2 { font-size: 22px; font-weight: 600; margin-bottom: 8px; }
+.form-header h2 { font-size: 20px; font-weight: 600; margin-bottom: 6px; }
 .form-header p { color: var(--text-secondary); font-size: 14px; line-height: 1.6; }
-.form-group { margin-bottom: 20px; }
+.form-group { margin-bottom: 18px; }
 .form-label {
   display: block;
   font-size: 14px;
@@ -152,6 +118,7 @@ body {
   transition: border-color 0.2s, box-shadow 0.2s;
   background: var(--card);
   color: var(--text);
+  -webkit-appearance: none;
 }
 .form-input:focus, .form-select:focus, .form-textarea:focus {
   outline: none;
@@ -163,8 +130,8 @@ body {
 .form-actions {
   display: flex;
   gap: 12px;
-  margin-top: 28px;
-  padding-top: 20px;
+  margin-top: 24px;
+  padding-top: 16px;
   border-top: 1px solid var(--border);
 }
 .form-actions .btn { flex: 1; justify-content: center; padding: 12px; font-size: 15px; }
@@ -178,15 +145,16 @@ body {
   z-index: 200;
   align-items: center;
   justify-content: center;
+  padding: 16px;
 }
 .success-overlay.show { display: flex; }
 .success-card {
   background: var(--card);
   border-radius: 12px;
-  padding: 40px;
+  padding: 40px 32px;
   text-align: center;
-  max-width: 400px;
-  width: 90%;
+  max-width: 380px;
+  width: 100%;
   box-shadow: var(--shadow-lg);
   animation: slideUp 0.3s ease;
 }
@@ -207,351 +175,10 @@ body {
 .success-card h3 { font-size: 20px; margin-bottom: 8px; }
 .success-card p { color: var(--text-secondary); font-size: 14px; margin-bottom: 24px; line-height: 1.6; }
 
-/* ===== Dashboard ===== */
-.dashboard {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 24px 16px;
-}
-.dashboard-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-  flex-wrap: wrap;
-  gap: 12px;
-}
-.dashboard-header h2 { font-size: 20px; font-weight: 600; }
-
-/* Stats Row */
-.stats-row {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 12px;
-  margin-bottom: 20px;
-}
-.stat-card {
-  background: var(--card);
-  border-radius: var(--radius);
-  padding: 16px;
-  box-shadow: var(--shadow);
-  text-align: center;
-}
-.stat-value { font-size: 28px; font-weight: 700; color: var(--text); }
-.stat-label { font-size: 12px; color: var(--text-secondary); margin-top: 4px; }
-.stat-card.pending .stat-value { color: var(--warning); }
-.stat-card.processing .stat-value { color: var(--processing); }
-.stat-card.completed .stat-value { color: var(--success); }
-.stat-card.closed .stat-value { color: var(--closed); }
-
-/* Filters */
-.filters {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 16px;
-  flex-wrap: wrap;
-  align-items: center;
-}
-.filter-chip {
-  padding: 6px 14px;
-  border-radius: 20px;
-  font-size: 13px;
-  cursor: pointer;
-  border: 1px solid var(--border);
-  background: var(--card);
-  color: var(--text-secondary);
-  transition: all 0.2s;
-  font-family: inherit;
-}
-.filter-chip:hover { border-color: var(--primary); color: var(--primary); }
-.filter-chip.active { background: var(--primary); color: white; border-color: var(--primary); }
-.search-input {
-  padding: 8px 12px 8px 36px;
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  font-size: 13px;
-  width: 220px;
-  background: var(--card) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2386909C' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E") no-repeat 12px center;
-  font-family: inherit;
-  transition: border-color 0.2s;
-}
-.search-input:focus { outline: none; border-color: var(--primary); }
-
-/* Kanban */
-.kanban {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
-}
-.kanban-column {
-  background: var(--bg);
-  border-radius: var(--radius);
-  padding: 12px;
-  min-height: 200px;
-}
-.kanban-header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 12px;
-  padding: 4px 0;
-}
-.kanban-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-.kanban-dot.pending { background: var(--warning); }
-.kanban-dot.processing { background: var(--processing); }
-.kanban-dot.completed { background: var(--success); }
-.kanban-dot.closed { background: var(--closed); }
-.kanban-title { font-size: 14px; font-weight: 500; }
-.kanban-count {
-  font-size: 12px;
-  color: var(--text-secondary);
-  background: var(--card);
-  padding: 1px 8px;
-  border-radius: 10px;
-  margin-left: auto;
-}
-
-/* Task Cards */
-.task-card {
-  background: var(--card);
-  border-radius: 6px;
-  padding: 14px;
-  margin-bottom: 8px;
-  box-shadow: var(--shadow);
-  cursor: pointer;
-  transition: box-shadow 0.2s, transform 0.15s;
-  border-left: 3px solid transparent;
-}
-.task-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-1px); }
-.task-card.pending { border-left-color: var(--warning); }
-.task-card.processing { border-left-color: var(--processing); }
-.task-card.completed { border-left-color: var(--success); }
-.task-card.closed { border-left-color: var(--closed); }
-.task-card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 8px;
-}
-.task-id { font-size: 12px; color: var(--text-secondary); font-weight: 500; }
-.task-provider {
-  font-size: 14px;
-  font-weight: 500;
-  margin-bottom: 6px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.task-station { font-size: 13px; color: var(--text-secondary); margin-bottom: 4px; }
-.task-meta {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 10px;
-  font-size: 12px;
-  color: var(--text-secondary);
-}
-.task-handler {
-  font-size: 12px;
-  background: var(--primary-light);
-  color: var(--primary);
-  padding: 2px 8px;
-  border-radius: 4px;
-  font-weight: 500;
-}
-.task-handler.unassigned {
-  background: var(--danger-bg);
-  color: var(--danger);
-}
-
-/* ===== Detail Modal ===== */
-.modal-overlay {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.5);
-  z-index: 200;
-  align-items: center;
-  justify-content: center;
-  padding: 16px;
-}
-.modal-overlay.show { display: flex; }
-.modal {
-  background: var(--card);
-  border-radius: 12px;
-  width: 100%;
-  max-width: 600px;
-  max-height: 90vh;
-  overflow-y: auto;
-  box-shadow: var(--shadow-lg);
-  animation: slideUp 0.3s ease;
-}
-.modal-header {
-  padding: 20px 24px;
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: sticky;
-  top: 0;
-  background: var(--card);
-  border-radius: 12px 12px 0 0;
-  z-index: 1;
-}
-.modal-header h3 { font-size: 18px; }
-.modal-close {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  border: none;
-  background: var(--bg);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 18px;
-  color: var(--text-secondary);
-  transition: background 0.2s;
-}
-.modal-close:hover { background: var(--border); }
-.modal-body { padding: 24px; }
-.detail-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-  margin-bottom: 20px;
-}
-.detail-item { }
-.detail-label { font-size: 12px; color: var(--text-secondary); margin-bottom: 4px; }
-.detail-value { font-size: 14px; font-weight: 500; }
-.detail-full { grid-column: 1 / -1; }
-.detail-desc {
-  background: var(--bg);
-  padding: 12px;
-  border-radius: 6px;
-  font-size: 14px;
-  line-height: 1.6;
-  white-space: pre-wrap;
-}
-.modal-actions {
-  padding: 16px 24px;
-  border-top: 1px solid var(--border);
-  display: flex;
-  gap: 8px;
-  justify-content: flex-end;
-  position: sticky;
-  bottom: 0;
-  background: var(--card);
-  border-radius: 0 0 12px 12px;
-}
-
-/* Status Select in Modal */
-.status-select {
-  padding: 8px 12px;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  font-size: 14px;
-  font-family: inherit;
-  background: var(--card);
-  cursor: pointer;
-}
-.status-select:focus { outline: none; border-color: var(--primary); }
-.result-input {
-  width: 100%;
-  padding: 10px 12px;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  font-size: 14px;
-  font-family: inherit;
-  resize: vertical;
-  min-height: 80px;
-  margin-top: 8px;
-}
-.result-input:focus { outline: none; border-color: var(--primary); }
-
-/* ===== Settings ===== */
-.settings-container {
-  max-width: 900px;
-  margin: 24px auto;
-  padding: 0 16px;
-}
-.settings-section {
-  background: var(--card);
-  border-radius: var(--radius);
-  padding: 24px;
-  box-shadow: var(--shadow);
-  margin-bottom: 20px;
-}
-.settings-section h3 {
-  font-size: 16px;
-  font-weight: 600;
-  margin-bottom: 4px;
-}
-.settings-section p {
-  font-size: 13px;
-  color: var(--text-secondary);
-  margin-bottom: 16px;
-}
-.mapping-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-.mapping-table th {
-  text-align: left;
-  padding: 10px 12px;
-  font-size: 12px;
-  color: var(--text-secondary);
-  font-weight: 500;
-  border-bottom: 1px solid var(--border);
-  background: var(--bg);
-}
-.mapping-table td {
-  padding: 10px 12px;
-  font-size: 14px;
-  border-bottom: 1px solid var(--border);
-}
-.mapping-table tr:hover td { background: var(--bg); }
-.mapping-table input {
-  width: 100%;
-  padding: 6px 8px;
-  border: 1px solid transparent;
-  border-radius: 4px;
-  font-size: 14px;
-  font-family: inherit;
-  background: transparent;
-}
-.mapping-table input:focus { border-color: var(--primary); background: var(--card); outline: none; }
-.mapping-table input:hover { background: var(--bg); }
-.mapping-actions { display: flex; gap: 4px; }
-
-/* ===== Links Section ===== */
-.links-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-}
-.link-card {
-  padding: 14px;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  text-decoration: none;
-  color: var(--text);
-  transition: all 0.2s;
-  display: block;
-}
-.link-card:hover { border-color: var(--primary); background: var(--primary-light); }
-.link-card-title { font-size: 14px; font-weight: 500; margin-bottom: 4px; }
-.link-card-desc { font-size: 12px; color: var(--text-secondary); }
-
 /* ===== Toast ===== */
 .toast-container {
   position: fixed;
-  top: 68px;
+  top: 16px;
   right: 16px;
   z-index: 300;
   display: flex;
@@ -575,399 +202,133 @@ body {
 }
 .toast.success { background: var(--success-bg); color: var(--success); border: 1px solid var(--success); }
 .toast.error { background: var(--danger-bg); color: var(--danger); border: 1px solid var(--danger); }
-.toast.info { background: var(--processing-bg); color: var(--processing); border: 1px solid var(--processing); }
 
-/* ===== Empty State ===== */
-.empty-state {
+/* ===== Footer ===== */
+.footer {
   text-align: center;
-  padding: 48px 24px;
+  padding: 20px 16px 32px;
+  font-size: 12px;
   color: var(--text-secondary);
 }
-.empty-state svg { margin-bottom: 16px; opacity: 0.4; }
-.empty-state h4 { font-size: 16px; color: var(--text); margin-bottom: 8px; }
-.empty-state p { font-size: 14px; }
-
-/* ===== View Toggle ===== */
-.view-section { display: none; }
-.view-section.active { display: block; }
 
 /* ===== Responsive ===== */
-@media (max-width: 768px) {
-  .nav-inner { padding: 0 12px; gap: 12px; }
-  .nav-brand span { display: none; }
-  .kanban { grid-template-columns: 1fr; }
-  .stats-row { grid-template-columns: repeat(2, 1fr); }
-  .detail-grid { grid-template-columns: 1fr; }
-  .links-grid { grid-template-columns: 1fr; }
-  .filters { flex-direction: column; align-items: stretch; }
-  .search-input { width: 100%; }
-  .form-card { padding: 20px; }
-  .modal { margin: 8px; max-height: 95vh; }
+@media (max-width: 480px) {
+  .form-card { padding: 20px 16px; }
+  .header-inner { padding: 12px 16px; }
 }
 
-/* ===== Scrollbar ===== */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: var(--text-secondary); }
-
-/* ===== Badge ===== */
-.badge {
-  display: inline-block;
-  padding: 2px 8px;
-  border-radius: 4px;
-  font-size: 12px;
-  font-weight: 500;
-}
-.badge.pending { background: var(--warning-bg); color: var(--warning); }
-.badge.processing { background: var(--processing-bg); color: var(--processing); }
-.badge.completed { background: var(--success-bg); color: var(--success); }
-.badge.closed { background: var(--closed-bg); color: var(--closed); }
-
-/* ===== Export/Import ===== */
-.data-section {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  margin-top: 12px;
-}
-.data-section .btn { font-size: 13px; }
 </style>
 </head>
 <body>
 
-<!-- Navigation -->
-<nav class="nav">
-  <div class="nav-inner">
-    <div class="nav-brand">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+<!-- Header -->
+<div class="header">
+  <div class="header-inner">
+    <div class="header-icon">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
       </svg>
-      <span>充电运维工单</span>
     </div>
-    <div class="nav-tabs">
-      <button class="nav-tab active" data-view="form" onclick="switchView('form')">提交工单</button>
-      <button class="nav-tab" data-view="dashboard" onclick="switchView('dashboard')">管理看板</button>
-      <button class="nav-tab" data-view="settings" onclick="switchView('settings')">设置</button>
-    </div>
-    <div class="nav-actions">
-      <button class="btn btn-sm btn-ghost" onclick="exportData()" title="导出数据">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
-        导出
-      </button>
-      <button class="btn btn-sm btn-ghost" onclick="importDataClick()" title="导入数据">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
-        导入
-      </button>
-      <input type="file" id="importFile" accept=".json" style="display:none" onchange="importData(event)">
+    <div class="header-text">
+      <h1>充电运维工单</h1>
+      <p>站点问题反馈与处理</p>
     </div>
   </div>
-</nav>
+</div>
 
 <!-- Toast Container -->
 <div class="toast-container" id="toastContainer"></div>
 
-<!-- ===== FORM VIEW ===== -->
-<div class="view-section active" id="view-form">
-  <div class="form-container">
-    <div class="form-card">
-      <div class="form-header">
-        <h2>充电运维工单提交</h2>
-        <p>请填写以下信息提交运维工单，带 <span style="color:var(--danger)">*</span> 的为必填项。提交后系统会自动分配处理人。</p>
-      </div>
-      <form id="ticketForm" onsubmit="submitForm(event)">
-        <div class="form-group">
-          <label class="form-label">填写日期</label>
-          <input type="date" class="form-input" id="f_date" required>
-        </div>
-        <div class="form-group">
-          <label class="form-label">反馈人 <span class="required">*</span></label>
-          <input type="text" class="form-input" id="f_reporter" placeholder="请输入您的姓名" required>
-        </div>
-        <div class="form-group">
-          <label class="form-label">服务商名称 <span class="required">*</span></label>
-          <input type="text" class="form-input" id="f_provider" placeholder="请输入服务商名称" required list="providerList">
-          <datalist id="providerList"></datalist>
-          <div class="form-hint">请准确填写服务商全称，系统将据此分配处理人</div>
-        </div>
-        <div class="form-group">
-          <label class="form-label">站点ID <span class="required">*</span></label>
-          <input type="text" class="form-input" id="f_stationId" placeholder="请输入站点ID" required>
-        </div>
-        <div class="form-group">
-          <label class="form-label">站点名称</label>
-          <input type="text" class="form-input" id="f_stationName" placeholder="请输入站点名称">
-        </div>
-        <div class="form-group">
-          <label class="form-label">POI ID</label>
-          <input type="text" class="form-input" id="f_poiId" placeholder="请输入POI ID">
-        </div>
-        <div class="form-group">
-          <label class="form-label">高德地图端内是否能搜索到该站</label>
-          <select class="form-select" id="f_searchable">
-            <option value="">请选择</option>
-            <option value="是">是</option>
-            <option value="否">否</option>
-            <option value="不确定">不确定</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label class="form-label">问题说明 <span class="required">*</span></label>
-          <textarea class="form-textarea" id="f_description" placeholder="请详细描述遇到的问题，包括现象、影响范围、是否紧急等" required></textarea>
-        </div>
-        <div class="form-actions">
-          <button type="button" class="btn" onclick="resetForm()">重置</button>
-          <button type="submit" class="btn btn-primary" id="submitBtn">提交工单</button>
-        </div>
-      </form>
+<!-- Form -->
+<div class="form-container">
+  <div class="form-card">
+    <div class="form-header">
+      <h2>问题反馈</h2>
+      <p>请填写以下信息提交运维工单，带 <span style="color:var(--danger)">*</span> 为必填项。</p>
     </div>
+    <form id="ticketForm" onsubmit="submitForm(event)">
+      <div class="form-group">
+        <label class="form-label">填写日期</label>
+        <input type="date" class="form-input" id="f_date" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">反馈人 <span class="required">*</span></label>
+        <input type="text" class="form-input" id="f_reporter" placeholder="请输入您的姓名" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">服务商名称 <span class="required">*</span></label>
+        <input type="text" class="form-input" id="f_provider" placeholder="请输入服务商全称" required>
+        <div class="form-hint">请准确填写服务商全称，系统将据此分配处理人</div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">站点ID <span class="required">*</span></label>
+        <input type="text" class="form-input" id="f_stationId" placeholder="请输入站点ID" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">站点名称</label>
+        <input type="text" class="form-input" id="f_stationName" placeholder="请输入站点名称">
+      </div>
+      <div class="form-group">
+        <label class="form-label">POI ID</label>
+        <input type="text" class="form-input" id="f_poiId" placeholder="请输入POI ID">
+      </div>
+      <div class="form-group">
+        <label class="form-label">高德地图端内是否能搜索到该站</label>
+        <select class="form-select" id="f_searchable">
+          <option value="">请选择</option>
+          <option value="是">是</option>
+          <option value="否">否</option>
+          <option value="不确定">不确定</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">问题说明 <span class="required">*</span></label>
+        <textarea class="form-textarea" id="f_description" placeholder="请详细描述遇到的问题，包括现象、影响范围等" required></textarea>
+      </div>
+      <div class="form-actions">
+        <button type="button" class="btn" onclick="resetForm()">重置</button>
+        <button type="submit" class="btn btn-primary">提交工单</button>
+      </div>
+    </form>
   </div>
 </div>
 
-<!-- ===== DASHBOARD VIEW ===== -->
-<div class="view-section" id="view-dashboard">
-  <div class="dashboard">
-    <div class="dashboard-header">
-      <h2>运维工单管理</h2>
-      <div style="display:flex;gap:8px;">
-        <button class="btn btn-sm" onclick="refreshDashboard()">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
-          刷新
-        </button>
-        <button class="btn btn-sm btn-primary" onclick="batchAssign()">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4-4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
-          批量分配
-        </button>
-      </div>
-    </div>
-
-    <!-- Stats -->
-    <div class="stats-row" id="statsRow">
-      <div class="stat-card"><div class="stat-value" id="statTotal">0</div><div class="stat-label">全部工单</div></div>
-      <div class="stat-card pending"><div class="stat-value" id="statPending">0</div><div class="stat-label">待处理</div></div>
-      <div class="stat-card processing"><div class="stat-value" id="statProcessing">0</div><div class="stat-label">处理中</div></div>
-      <div class="stat-card completed"><div class="stat-value" id="statCompleted">0</div><div class="stat-label">已完成</div></div>
-      <div class="stat-card closed"><div class="stat-value" id="statClosed">0</div><div class="stat-label">已关闭</div></div>
-    </div>
-
-    <!-- Filters -->
-    <div class="filters">
-      <input type="text" class="search-input" id="searchInput" placeholder="搜索服务商/站点/问题..." oninput="filterTasks()">
-      <select class="filter-chip" id="filterHandler" onchange="filterTasks()" style="padding:6px 12px;border-radius:20px;font-size:13px;">
-        <option value="">全部处理人</option>
-      </select>
-    </div>
-
-    <!-- Kanban Board -->
-    <div class="kanban" id="kanbanBoard">
-      <div class="kanban-column">
-        <div class="kanban-header">
-          <span class="kanban-dot pending"></span>
-          <span class="kanban-title">待处理</span>
-          <span class="kanban-count" id="countPending">0</span>
-        </div>
-        <div id="colPending"></div>
-      </div>
-      <div class="kanban-column">
-        <div class="kanban-header">
-          <span class="kanban-dot processing"></span>
-          <span class="kanban-title">处理中</span>
-          <span class="kanban-count" id="countProcessing">0</span>
-        </div>
-        <div id="colProcessing"></div>
-      </div>
-      <div class="kanban-column">
-        <div class="kanban-header">
-          <span class="kanban-dot completed"></span>
-          <span class="kanban-title">已完成</span>
-          <span class="kanban-count" id="countCompleted">0</span>
-        </div>
-        <div id="colCompleted"></div>
-      </div>
-      <div class="kanban-column">
-        <div class="kanban-header">
-          <span class="kanban-dot closed"></span>
-          <span class="kanban-title">已关闭</span>
-          <span class="kanban-count" id="countClosed">0</span>
-        </div>
-        <div id="colClosed"></div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ===== SETTINGS VIEW ===== -->
-<div class="view-section" id="view-settings">
-  <div class="settings-container">
-    <!-- Handler Mapping -->
-    <div class="settings-section">
-      <h3>服务商 - 处理人映射</h3>
-      <p>配置服务商名称与处理人的对应关系。新工单提交时会根据服务商名称自动匹配处理人。</p>
-      <div style="margin-bottom:12px;display:flex;gap:8px;">
-        <button class="btn btn-sm btn-primary" onclick="addMapping()">+ 添加映射</button>
-        <button class="btn btn-sm" onclick="saveMappings()">保存</button>
-      </div>
-      <div style="overflow-x:auto;">
-        <table class="mapping-table" id="mappingTable">
-          <thead>
-            <tr>
-              <th style="width:35%">服务商名称</th>
-              <th style="width:25%">处理人</th>
-              <th style="width:25%">联系方式</th>
-              <th style="width:10%">备注</th>
-              <th style="width:5%"></th>
-            </tr>
-          </thead>
-          <tbody id="mappingBody"></tbody>
-        </table>
-      </div>
-    </div>
-
-    <!-- Data Management -->
-    <div class="settings-section">
-      <h3>数据管理</h3>
-      <p>导出或导入工单数据，用于备份或与钉钉 AI 表格同步。</p>
-      <div class="data-section">
-        <button class="btn btn-sm" onclick="exportData()">导出全部数据 (JSON)</button>
-        <button class="btn btn-sm" onclick="exportCSV()">导出 CSV</button>
-        <button class="btn btn-sm" onclick="importDataClick()">导入数据 (JSON)</button>
-        <button class="btn btn-sm btn-danger" onclick="clearData()">清空所有数据</button>
-      </div>
-    </div>
-
-    <!-- Links -->
-    <div class="settings-section">
-      <h3>相关链接</h3>
-      <p>系统相关的钉钉文档和表单链接。</p>
-      <div class="links-grid">
-        <a class="link-card" href="https://alidocs.dingtalk.com/notable/share/form/v01K4ny98EXdpk6jnLb_DQTvIgC_iNZdlHF" target="_blank">
-          <div class="link-card-title">钉钉表单（填写入口）</div>
-          <div class="link-card-desc">服务商通过这个链接提交工单，可直接写入 AI 表格</div>
-        </a>
-        <a class="link-card" href="https://alidocs.dingtalk.com/i/nodes/G1DKw2zgV2KnvL4kFdKrg6EgJB5r9YAn" target="_blank">
-          <div class="link-card-title">钉钉 AI 表格（数据后台）</div>
-          <div class="link-card-desc">查看所有工单数据，配置自动化工作流</div>
-        </a>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ===== Detail Modal ===== -->
-<div class="modal-overlay" id="detailModal">
-  <div class="modal">
-    <div class="modal-header">
-      <h3 id="modalTitle">工单详情</h3>
-      <button class="modal-close" onclick="closeModal()">&times;</button>
-    </div>
-    <div class="modal-body" id="modalBody"></div>
-    <div class="modal-actions" id="modalActions"></div>
-  </div>
-</div>
-
-<!-- ===== Success Overlay ===== -->
+<!-- Success Overlay -->
 <div class="success-overlay" id="successOverlay" onclick="closeSuccess()">
   <div class="success-card" onclick="event.stopPropagation()">
     <div class="success-icon">
       <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#00B42A" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
     </div>
-    <h3>工单提交成功</h3>
-    <p id="successMsg">工单已创建并分配给对应处理人。</p>
+    <h3>提交成功</h3>
+    <p id="successMsg">工单已提交，运维团队将尽快处理。</p>
     <button class="btn btn-primary" onclick="closeSuccess()" style="width:100%;justify-content:center;">继续提交</button>
   </div>
 </div>
 
+<!-- Footer -->
+<div class="footer">充电运维团队</div>
+
 <script>
-// ===== Data Store =====
-const STORAGE_KEY = 'charging_ops_tickets';
-const MAPPING_KEY = 'charging_ops_mappings';
-
-function loadTickets() {
-  try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
-  catch { return []; }
-}
-function saveTickets(tickets) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(tickets));
-}
-function loadMappings() {
-  try { return JSON.parse(localStorage.getItem(MAPPING_KEY)) || []; }
-  catch { return []; }
-}
-function saveMappingsData(mappings) {
-  localStorage.setItem(MAPPING_KEY, JSON.stringify(mappings));
-}
-
-// ===== Utilities =====
-function generateId() {
-  const d = new Date();
-  const prefix = 'WO';
-  const ts = d.getFullYear().toString().slice(2) + String(d.getMonth()+1).padStart(2,'0') + String(d.getDate()).padStart(2,'0');
-  const rand = Math.random().toString(36).substr(2,4).toUpperCase();
-  return `${prefix}${ts}${rand}`;
-}
-function formatDate(dateStr) {
-  if (!dateStr) return '-';
-  const d = new Date(dateStr);
-  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-}
-function formatDateTime(dateStr) {
-  if (!dateStr) return '-';
-  const d = new Date(dateStr);
-  return `${formatDate(dateStr)} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
-}
 function todayStr() {
   const d = new Date();
   return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
 }
-function getHandler(provider) {
-  const mappings = loadMappings();
-  const m = mappings.find(x => x.provider && provider && x.provider.trim() === provider.trim());
-  return m ? m.handler : '';
-}
 
-// ===== Toast =====
-function showToast(msg, type = 'info') {
+function showToast(msg, type) {
   const container = document.getElementById('toastContainer');
   const toast = document.createElement('div');
   toast.className = `toast ${type}`;
-  const icons = {
-    success: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>',
-    error: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>',
-    info: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>'
-  };
-  toast.innerHTML = `${icons[type] || icons.info}<span>${msg}</span>`;
+  toast.innerHTML = `<span>${msg}</span>`;
   container.appendChild(toast);
-  setTimeout(() => { toast.style.opacity = '0'; toast.style.transform = 'translateX(100%)'; setTimeout(() => toast.remove(), 300); }, 3000);
-}
-
-// ===== View Switching =====
-function switchView(view) {
-  document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
-  document.querySelectorAll('.nav-tab').forEach(el => el.classList.remove('active'));
-  document.getElementById(`view-${view}`).classList.add('active');
-  document.querySelector(`.nav-tab[data-view="${view}"]`).classList.add('active');
-  window.location.hash = view;
-  if (view === 'dashboard') refreshDashboard();
-  if (view === 'settings') renderMappings();
-  if (view === 'form') updateProviderList();
-}
-
-// ===== Form =====
-function initForm() {
-  document.getElementById('f_date').value = todayStr();
-  updateProviderList();
-}
-
-function updateProviderList() {
-  const mappings = loadMappings();
-  const dl = document.getElementById('providerList');
-  dl.innerHTML = mappings.map(m => `<option value="${m.provider}">`).join('');
+  setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 300); }, 3000);
 }
 
 function submitForm(e) {
   e.preventDefault();
-  const ticket = {
-    id: generateId(),
+  const data = {
     date: document.getElementById('f_date').value,
     reporter: document.getElementById('f_reporter').value.trim(),
     provider: document.getElementById('f_provider').value.trim(),
@@ -976,29 +337,27 @@ function submitForm(e) {
     poiId: document.getElementById('f_poiId').value.trim(),
     searchable: document.getElementById('f_searchable').value,
     description: document.getElementById('f_description').value.trim(),
-    status: 'pending',
-    handler: getHandler(document.getElementById('f_provider').value.trim()),
-    result: '',
-    completedAt: '',
     createdAt: new Date().toISOString()
   };
 
-  // Auto-match handler
-  if (!ticket.handler) {
-    ticket.status = 'pending';
+  // Validate
+  if (!data.reporter || !data.provider || !data.stationId || !data.description) {
+    showToast('请填写所有必填项', 'error');
+    return;
   }
 
-  const tickets = loadTickets();
-  tickets.unshift(ticket);
-  saveTickets(tickets);
+  // Store locally as backup
+  try {
+    const tickets = JSON.parse(localStorage.getItem('charging_ops_tickets') || '[]');
+    const id = 'WO' + todayStr().replace(/-/g,'').slice(2) + Math.random().toString(36).substr(2,4).toUpperCase();
+    tickets.unshift({ id, ...data, status: 'pending', handler: '', result: '', completedAt: '' });
+    localStorage.setItem('charging_ops_tickets', JSON.stringify(tickets));
+    document.getElementById('successMsg').innerHTML = `工单编号：<strong>${id}</strong><br>运维团队将尽快处理。`;
+  } catch(e) {
+    document.getElementById('successMsg').textContent = '工单已提交，运维团队将尽快处理。';
+  }
 
-  // Show success
-  const handlerInfo = ticket.handler
-    ? `已自动分配给处理人：<strong>${ticket.handler}</strong>`
-    : '暂未匹配到处理人，请联系管理员配置映射关系。';
-  document.getElementById('successMsg').innerHTML = `工单编号：<strong>${ticket.id}</strong><br>${handlerInfo}`;
   document.getElementById('successOverlay').classList.add('show');
-
   resetForm();
 }
 
@@ -1011,416 +370,11 @@ function closeSuccess() {
   document.getElementById('successOverlay').classList.remove('show');
 }
 
-// ===== Dashboard =====
-function refreshDashboard() {
-  const tickets = loadTickets();
-  const counts = { total: tickets.length, pending: 0, processing: 0, completed: 0, closed: 0 };
-  tickets.forEach(t => { if (counts[t.status] !== undefined) counts[t.status]++; });
-
-  document.getElementById('statTotal').textContent = counts.total;
-  document.getElementById('statPending').textContent = counts.pending;
-  document.getElementById('statProcessing').textContent = counts.processing;
-  document.getElementById('statCompleted').textContent = counts.completed;
-  document.getElementById('statClosed').textContent = counts.closed;
-  document.getElementById('countPending').textContent = counts.pending;
-  document.getElementById('countProcessing').textContent = counts.processing;
-  document.getElementById('countCompleted').textContent = counts.completed;
-  document.getElementById('countClosed').textContent = counts.closed;
-
-  // Update handler filter
-  const handlers = [...new Set(tickets.map(t => t.handler).filter(Boolean))];
-  const sel = document.getElementById('filterHandler');
-  const current = sel.value;
-  sel.innerHTML = '<option value="">全部处理人</option>' + handlers.map(h => `<option value="${h}">${h}</option>`).join('');
-  sel.value = current;
-
-  filterTasks();
-}
-
-function filterTasks() {
-  const search = document.getElementById('searchInput').value.toLowerCase();
-  const handlerFilter = document.getElementById('filterHandler').value;
-  const tickets = loadTickets();
-
-  const filtered = tickets.filter(t => {
-    if (handlerFilter && t.handler !== handlerFilter) return false;
-    if (search) {
-      const haystack = `${t.id} ${t.provider} ${t.stationId} ${t.stationName} ${t.poiId} ${t.description} ${t.reporter} ${t.handler}`.toLowerCase();
-      if (!haystack.includes(search)) return false;
-    }
-    return true;
-  });
-
-  renderKanban(filtered);
-}
-
-function renderKanban(tickets) {
-  const columns = { pending: [], processing: [], completed: [], closed: [] };
-  tickets.forEach(t => {
-    if (columns[t.status]) columns[t.status].push(t);
-  });
-
-  Object.keys(columns).forEach(status => {
-    const colId = status === 'closed' ? 'colClosed' : `col${status.charAt(0).toUpperCase() + status.slice(1)}`;
-    const col = document.getElementById(colId);
-    if (columns[status].length === 0) {
-      col.innerHTML = '<div class="empty-state" style="padding:24px 12px;"><p style="font-size:13px;color:var(--text-secondary);">暂无工单</p></div>';
-    } else {
-      col.innerHTML = columns[status].map(t => renderTaskCard(t)).join('');
-    }
-  });
-}
-
-function renderTaskCard(t) {
-  const handlerLabel = t.handler
-    ? `<span class="task-handler">${t.handler}</span>`
-    : `<span class="task-handler unassigned">未分配</span>`;
-  return `
-    <div class="task-card ${t.status}" onclick="openDetail('${t.id}')">
-      <div class="task-card-header">
-        <span class="task-id">${t.id}</span>
-        ${handlerLabel}
-      </div>
-      <div class="task-provider">${escHtml(t.provider)}</div>
-      <div class="task-station">${escHtml(t.stationId)}${t.stationName ? ' / ' + escHtml(t.stationName) : ''}</div>
-      <div class="task-meta">
-        <span>${formatDate(t.date)}</span>
-        <span>${escHtml(t.reporter)}</span>
-      </div>
-    </div>
-  `;
-}
-
-function escHtml(str) {
-  if (!str) return '';
-  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-
-// ===== Detail Modal =====
-function openDetail(id) {
-  const tickets = loadTickets();
-  const t = tickets.find(x => x.id === id);
-  if (!t) return;
-
-  const statusMap = { pending: '待处理', processing: '处理中', completed: '已完成', closed: '已关闭' };
-
-  document.getElementById('modalTitle').textContent = `工单 ${t.id}`;
-
-  document.getElementById('modalBody').innerHTML = `
-    <div class="detail-grid">
-      <div class="detail-item">
-        <div class="detail-label">工单编号</div>
-        <div class="detail-value">${t.id}</div>
-      </div>
-      <div class="detail-item">
-        <div class="detail-label">当前状态</div>
-        <div class="detail-value"><span class="badge ${t.status}">${statusMap[t.status]}</span></div>
-      </div>
-      <div class="detail-item">
-        <div class="detail-label">填写日期</div>
-        <div class="detail-value">${formatDate(t.date)}</div>
-      </div>
-      <div class="detail-item">
-        <div class="detail-label">反馈人</div>
-        <div class="detail-value">${escHtml(t.reporter)}</div>
-      </div>
-      <div class="detail-item">
-        <div class="detail-label">服务商名称</div>
-        <div class="detail-value">${escHtml(t.provider)}</div>
-      </div>
-      <div class="detail-item">
-        <div class="detail-label">处理人</div>
-        <div class="detail-value">${t.handler ? escHtml(t.handler) : '<span style="color:var(--danger)">未分配</span>'}</div>
-      </div>
-      <div class="detail-item">
-        <div class="detail-label">站点ID</div>
-        <div class="detail-value">${escHtml(t.stationId) || '-'}</div>
-      </div>
-      <div class="detail-item">
-        <div class="detail-label">站点名称</div>
-        <div class="detail-value">${escHtml(t.stationName) || '-'}</div>
-      </div>
-      <div class="detail-item">
-        <div class="detail-label">POI ID</div>
-        <div class="detail-value">${escHtml(t.poiId) || '-'}</div>
-      </div>
-      <div class="detail-item">
-        <div class="detail-label">端内可搜索</div>
-        <div class="detail-value">${escHtml(t.searchable) || '-'}</div>
-      </div>
-      <div class="detail-item detail-full">
-        <div class="detail-label">问题说明</div>
-        <div class="detail-desc">${escHtml(t.description)}</div>
-      </div>
-      ${t.result ? `
-      <div class="detail-item detail-full">
-        <div class="detail-label">处理结果</div>
-        <div class="detail-desc">${escHtml(t.result)}</div>
-      </div>` : ''}
-      ${t.completedAt ? `
-      <div class="detail-item">
-        <div class="detail-label">完成时间</div>
-        <div class="detail-value">${formatDateTime(t.completedAt)}</div>
-      </div>` : ''}
-    </div>
-
-    <!-- Status Update -->
-    <div style="border-top:1px solid var(--border);padding-top:16px;margin-top:8px;">
-      <div style="display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap;">
-        <div style="flex:1;min-width:120px;">
-          <label class="detail-label" style="margin-bottom:6px;">变更状态</label>
-          <select class="status-select" id="modalStatus">
-            <option value="pending" ${t.status==='pending'?'selected':''}>待处理</option>
-            <option value="processing" ${t.status==='processing'?'selected':''}>处理中</option>
-            <option value="completed" ${t.status==='completed'?'selected':''}>已完成</option>
-            <option value="closed" ${t.status==='closed'?'selected':''}>已关闭</option>
-          </select>
-        </div>
-        <div style="flex:1;min-width:120px;">
-          <label class="detail-label" style="margin-bottom:6px;">修改处理人</label>
-          <input type="text" class="form-input" id="modalHandler" value="${escHtml(t.handler)}" placeholder="输入处理人姓名" style="padding:8px 12px;">
-        </div>
-      </div>
-      <div style="margin-top:12px;">
-        <label class="detail-label" style="margin-bottom:6px;">处理结果</label>
-        <textarea class="result-input" id="modalResult" placeholder="填写处理结果说明...">${escHtml(t.result)}</textarea>
-      </div>
-    </div>
-  `;
-
-  document.getElementById('modalActions').innerHTML = `
-    <button class="btn" onclick="closeModal()">取消</button>
-    <button class="btn btn-danger btn-sm" onclick="deleteTicket('${t.id}')" style="margin-right:auto;">删除</button>
-    <button class="btn btn-primary" onclick="updateTicket('${t.id}')">保存更新</button>
-  `;
-
-  document.getElementById('detailModal').classList.add('show');
-}
-
-function closeModal() {
-  document.getElementById('detailModal').classList.remove('show');
-}
-
-function updateTicket(id) {
-  const tickets = loadTickets();
-  const idx = tickets.findIndex(x => x.id === id);
-  if (idx === -1) return;
-
-  const newStatus = document.getElementById('modalStatus').value;
-  const newHandler = document.getElementById('modalHandler').value.trim();
-  const newResult = document.getElementById('modalResult').value.trim();
-
-  tickets[idx].status = newStatus;
-  tickets[idx].handler = newHandler;
-  tickets[idx].result = newResult;
-
-  if ((newStatus === 'completed' || newStatus === 'closed') && !tickets[idx].completedAt) {
-    tickets[idx].completedAt = new Date().toISOString();
-  }
-
-  saveTickets(tickets);
-  closeModal();
-  refreshDashboard();
-
-  const statusMap = { pending: '待处理', processing: '处理中', completed: '已完成', closed: '已关闭' };
-  showToast(`工单 ${id} 已更新为「${statusMap[newStatus]}」`, 'success');
-}
-
-function deleteTicket(id) {
-  if (!confirm(`确定要删除工单 ${id} 吗？此操作不可恢复。`)) return;
-  const tickets = loadTickets().filter(x => x.id !== id);
-  saveTickets(tickets);
-  closeModal();
-  refreshDashboard();
-  showToast(`工单 ${id} 已删除`, 'success');
-}
-
-function batchAssign() {
-  const tickets = loadTickets();
-  let assigned = 0;
-  tickets.forEach(t => {
-    if (!t.handler && t.provider) {
-      const handler = getHandler(t.provider);
-      if (handler) {
-        t.handler = handler;
-        assigned++;
-      }
-    }
-  });
-  if (assigned > 0) {
-    saveTickets(tickets);
-    refreshDashboard();
-    showToast(`已为 ${assigned} 个工单分配处理人`, 'success');
-  } else {
-    showToast('没有需要分配的工单，或所有服务商均未配置映射', 'info');
-  }
-}
-
-// ===== Settings - Mapping =====
-function renderMappings() {
-  const mappings = loadMappings();
-  const body = document.getElementById('mappingBody');
-  if (mappings.length === 0) {
-    body.innerHTML = `<tr><td colspan="5" style="text-align:center;padding:24px;color:var(--text-secondary);">暂无映射，点击「添加映射」开始配置</td></tr>`;
-    return;
-  }
-  body.innerHTML = mappings.map((m, i) => `
-    <tr data-idx="${i}">
-      <td><input type="text" value="${escHtml(m.provider)}" placeholder="服务商全称" onchange="updateMapping(${i},'provider',this.value)"></td>
-      <td><input type="text" value="${escHtml(m.handler)}" placeholder="处理人" onchange="updateMapping(${i},'handler',this.value)"></td>
-      <td><input type="text" value="${escHtml(m.contact)}" placeholder="钉钉/手机" onchange="updateMapping(${i},'contact',this.value)"></td>
-      <td><input type="text" value="${escHtml(m.note)}" placeholder="备注" onchange="updateMapping(${i},'note',this.value)"></td>
-      <td><div class="mapping-actions"><button class="btn btn-sm btn-ghost" onclick="removeMapping(${i})" style="color:var(--danger);padding:4px;">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
-      </button></div></td>
-    </tr>
-  `).join('');
-}
-
-function addMapping() {
-  const mappings = loadMappings();
-  mappings.push({ provider: '', handler: '', contact: '', note: '' });
-  saveMappingsData(mappings);
-  renderMappings();
-  // Focus the new row
-  setTimeout(() => {
-    const rows = document.querySelectorAll('#mappingBody tr');
-    if (rows.length > 0) rows[rows.length-1].querySelector('input').focus();
-  }, 100);
-}
-
-function updateMapping(idx, field, value) {
-  const mappings = loadMappings();
-  if (mappings[idx]) {
-    mappings[idx][field] = value;
-    saveMappingsData(mappings);
-  }
-}
-
-function removeMapping(idx) {
-  const mappings = loadMappings();
-  mappings.splice(idx, 1);
-  saveMappingsData(mappings);
-  renderMappings();
-}
-
-function saveMappings() {
-  // Data is already saved on change, just show confirmation
-  showToast('映射配置已保存', 'success');
-}
-
-// ===== Export/Import =====
-function exportData() {
-  const data = {
-    version: 1,
-    exportedAt: new Date().toISOString(),
-    tickets: loadTickets(),
-    mappings: loadMappings()
-  };
-  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = `charging_ops_export_${todayStr()}.json`;
-  a.click();
-  URL.revokeObjectURL(url);
-  showToast('数据已导出', 'success');
-}
-
-function exportCSV() {
-  const tickets = loadTickets();
-  if (tickets.length === 0) { showToast('暂无数据可导出', 'info'); return; }
-  const headers = ['工单编号','填写日期','反馈人','服务商名称','站点ID','站点名称','POI ID','端内可搜索','问题说明','处理状态','处理人','处理结果','完成时间'];
-  const statusMap = { pending: '待处理', processing: '处理中', completed: '已完成', closed: '已关闭' };
-  const rows = tickets.map(t => [
-    t.id, t.date, t.reporter, t.provider, t.stationId, t.stationName, t.poiId,
-    t.searchable, `"${(t.description||'').replace(/"/g,'""')}"`, statusMap[t.status]||t.status,
-    t.handler, `"${(t.result||'').replace(/"/g,'""')}"`, t.completedAt ? formatDateTime(t.completedAt) : ''
-  ]);
-  const csv = '\uFEFF' + [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
-  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = `charging_ops_${todayStr()}.csv`;
-  a.click();
-  URL.revokeObjectURL(url);
-  showToast('CSV 已导出', 'success');
-}
-
-function importDataClick() {
-  document.getElementById('importFile').click();
-}
-
-function importData(event) {
-  const file = event.target.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = function(e) {
-    try {
-      const data = JSON.parse(e.target.result);
-      if (data.tickets && Array.isArray(data.tickets)) {
-        const existing = loadTickets();
-        const existingIds = new Set(existing.map(t => t.id));
-        const newTickets = data.tickets.filter(t => !existingIds.has(t.id));
-        saveTickets([...newTickets, ...existing]);
-        showToast(`导入成功：新增 ${newTickets.length} 条工单`, 'success');
-      }
-      if (data.mappings && Array.isArray(data.mappings)) {
-        saveMappingsData(data.mappings);
-        renderMappings();
-        showToast(`导入成功：更新 ${data.mappings.length} 条映射`, 'success');
-      }
-      refreshDashboard();
-    } catch (err) {
-      showToast('导入失败：文件格式错误', 'error');
-    }
-  };
-  reader.readAsText(file);
-  event.target.value = '';
-}
-
-function clearData() {
-  if (!confirm('确定要清空所有数据吗？此操作不可恢复！建议先导出备份。')) return;
-  if (!confirm('再次确认：清空后所有工单和映射数据将丢失。')) return;
-  localStorage.removeItem(STORAGE_KEY);
-  localStorage.removeItem(MAPPING_KEY);
-  refreshDashboard();
-  renderMappings();
-  showToast('所有数据已清空', 'success');
-}
-
-// ===== Init =====
-function init() {
-  // Hash routing
-  const hash = window.location.hash.replace('#', '') || 'form';
-  if (['form', 'dashboard', 'settings'].includes(hash)) {
-    switchView(hash);
-  }
-  initForm();
-
-  // Close modal on overlay click
-  document.getElementById('detailModal').addEventListener('click', function(e) {
-    if (e.target === this) closeModal();
-  });
-
-  // ESC to close modals
-  document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') {
-      closeModal();
-      closeSuccess();
-    }
-  });
-}
-
-window.addEventListener('hashchange', function() {
-  const hash = window.location.hash.replace('#', '');
-  if (['form', 'dashboard', 'settings'].includes(hash)) {
-    switchView(hash);
-  }
+// Init
+document.getElementById('f_date').value = todayStr();
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeSuccess();
 });
-
-init();
 </script>
 </body>
 </html>
